@@ -1,0 +1,16 @@
+[
+  {
+    "model": "accounts.Personal_data",
+    "pk": 1,
+    "fields": {
+      "name": "Viktor",
+      "surname": "Lysenko",
+      "date_of_birth": "1983-09-07",
+      "bio": "Born, not dead yet",
+      "email": "lysenko.viktor.83@gmail.com",
+      "jabber": "mrv83@42cc.co",
+      "skype": "mrv830907",
+      "other_contact": "none"
+    }
+  }
+]

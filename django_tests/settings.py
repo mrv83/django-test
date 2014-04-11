@@ -1,4 +1,9 @@
 # Django settings for django_tests project.
+import os
+
+here = lambda *x: os.path.join(os.path.abspath(os.path.dirname(__file__)), *x)
+PROJECT_ROOT = here('..')
+root = lambda *x: os.path.abspath(os.path.join(os.path.abspath(PROJECT_ROOT), *x))
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -11,8 +16,8 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': '',                      # Or path to database file if using sqlite3.
+        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'test.db',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': '',
         'PASSWORD': '',
@@ -61,14 +66,19 @@ MEDIA_URL = ''
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/var/www/example.com/static/"
-STATIC_ROOT = ''
+
+STATIC_ROOT = root('django_tests', 'static_root')
+# STATIC_ROOT = '/home/mrv/PycharmProjects/django-test/django_tests/static'
+STATIC_URL = '/static/'
 
 # URL prefix for static files.
 # Example: "http://example.com/static/", "http://static.example.com/"
-STATIC_URL = '/static/'
+# STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
+    # root('django_tests', 'static'),
+    root('django_tests/static'),
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -108,6 +118,8 @@ ROOT_URLCONF = 'django_tests.urls'
 WSGI_APPLICATION = 'django_tests.wsgi.application'
 
 TEMPLATE_DIRS = (
+    # "/templates/"
+    root('django_tests/templates'),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -124,6 +136,7 @@ INSTALLED_APPS = (
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'accounts',
 )
 
 # A sample logging configuration. The only tangible logging

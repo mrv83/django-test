@@ -1,0 +1,17 @@
+.content {
+    width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.test_col {
+    width: 500px;
+}
+.test_col_left {
+    float: left;
+}
+.test_col_right {
+    float: right;
+}
+.test_col_cont {
+    height: 170px;
+}
