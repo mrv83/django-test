@@ -27,6 +27,10 @@
             </div>
             <textarea rows="4" cols="50" readonly>{{ me.other_contact }}</textarea>
         </div>
+        <hr>
+        {% for r in requests %}
+            <a href="{{ r.path }}">Request: {{ r.path }}   Method: {{ r.method_request }}  at: {{ r.time_request }}</a>
+        {% endfor %}
     </div>
 </body>
 </html>
