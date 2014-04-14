@@ -3,34 +3,15 @@
 <html>
 <head>
     <title>Base page</title>
-    <link href="{% static 'css/base.css' %}" rel="stylesheet">
-{#    <link href="{{ STATIC_URL }}css/base.css" rel="stylesheet">#}
+
+    {% block for_css %}
+    {% endblock for_css %}
+
 </head>
 <body>
-    <div class="content">
-        <div><h3>42 Coffee Cups Test Assignment</h3></div>
-        <div class="test_col test_col_left">
-            <div class="test_col_cont">
-                <p>Name: {{ me.name }}</p>
-                <p>Last name: {{ me.surname }}</p>
-                <p>Date of birth: {{ me.date_of_birth }}</p>
-            </div>
-            <textarea rows="4" cols="50" readonly>{{ me.bio }}</textarea>
-        </div>
-        <div class="test_col test_col_right">
-            <div class="test_col_cont">
-                <p>Contacts:</p>
-                <p>email: {{ me.email }}</p>
-                <p>jabber: {{ me.jabber }}</p>
-                <p>skype: {{ me.skype }}</p>
-                <p>Other contacts:</p>
-            </div>
-            <textarea rows="4" cols="50" readonly>{{ me.other_contact }}</textarea>
-        </div>
-        <hr>
-        {% for r in requests %}
-            <p><a href="{{ r.path }}">Request: "{{ r.path }}"    Method: {{ r.method_request }}   at: {{ r.time_request }}</a></p>
-        {% endfor %}
-    </div>
+
+{% block content %}
+{% endblock content %}
+
 </body>
 </html>

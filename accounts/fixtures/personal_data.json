@@ -1,6 +1,6 @@
 [
   {
-    "model": "accounts.Personal_data",
+    "model": "accounts.PersonalData",
     "pk": 1,
     "fields": {
       "name": "Viktor",

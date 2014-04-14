@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 
-class Personal_data(models.Model):
+class PersonalData(models.Model):
     name = models.CharField(max_length=32, default='')
     surname = models.CharField(max_length=32, default='')
     date_of_birth = models.DateField(blank=True)
