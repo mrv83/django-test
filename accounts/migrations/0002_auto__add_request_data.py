@@ -8,24 +8,19 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        # Adding model 'Personal_data'
-        db.create_table(u'accounts_personal_data', (
+        # Adding model 'Request_data'
+        db.create_table(u'accounts_request_data', (
             (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(default='', max_length=32)),
-            ('surname', self.gf('django.db.models.fields.CharField')(default='', max_length=32)),
-            ('date_of_birth', self.gf('django.db.models.fields.DateField')(blank=True)),
-            ('bio', self.gf('django.db.models.fields.TextField')(default='', max_length=1024, blank=True)),
-            ('email', self.gf('django.db.models.fields.EmailField')(max_length=75, blank=True)),
-            ('jabber', self.gf('django.db.models.fields.EmailField')(max_length=75)),
-            ('skype', self.gf('django.db.models.fields.CharField')(default='', max_length=32, blank=True)),
-            ('other_contact', self.gf('django.db.models.fields.TextField')(default='', max_length=1024, blank=True)),
+            ('path', self.gf('django.db.models.fields.CharField')(max_length=256)),
+            ('method_request', self.gf('django.db.models.fields.CharField')(max_length=16)),
+            ('time_request', self.gf('django.db.models.fields.DateField')(auto_now_add=True, blank=True)),
         ))
-        db.send_create_signal(u'accounts', ['Personal_data'])
+        db.send_create_signal(u'accounts', ['Request_data'])
 
 
     def backwards(self, orm):
-        # Deleting model 'Personal_data'
-        db.delete_table(u'accounts_personal_data')
+        # Deleting model 'Request_data'
+        db.delete_table(u'accounts_request_data')
 
 
     models = {
@@ -40,6 +35,13 @@ class Migration(SchemaMigration):
             'other_contact': ('django.db.models.fields.TextField', [], {'default': "''", 'max_length': '1024', 'blank': 'True'}),
             'skype': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '32', 'blank': 'True'}),
             'surname': ('django.db.models.fields.CharField', [], {'default': "''", 'max_length': '32'})
+        },
+        u'accounts.request_data': {
+            'Meta': {'object_name': 'Request_data'},
+            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
+            'method_request': ('django.db.models.fields.CharField', [], {'max_length': '16'}),
+            'path': ('django.db.models.fields.CharField', [], {'max_length': '256'}),
+            'time_request': ('django.db.models.fields.DateField', [], {'auto_now_add': 'True', 'blank': 'True'})
         }
     }
 

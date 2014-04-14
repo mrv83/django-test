@@ -29,7 +29,7 @@
         </div>
         <hr>
         {% for r in requests %}
-            <a href="{{ r.path }}">Request: {{ r.path }}   Method: {{ r.method_request }}  at: {{ r.time_request }}</a>
+            <p><a href="{{ r.path }}">Request: "{{ r.path }}"    Method: {{ r.method_request }}   at: {{ r.time_request }}</a></p>
         {% endfor %}
     </div>
 </body>

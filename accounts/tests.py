@@ -40,6 +40,7 @@ class Request0Test(TestCase):
         base_url = reverse('home')
         response = self.client.get(base_url)
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context['requests']), 1)
 
 class Request5Test(TestCase):
     fixtures = ['request_data_5.json', 'personal_data.json']
@@ -48,7 +49,7 @@ class Request5Test(TestCase):
         base_url = reverse('home')
         response = self.client.get(base_url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.context['requests']), 5)
+        self.assertEqual(len(response.context['requests']), 6) #with +1 requestwhen test called
 
 class Request11Test(TestCase):
     fixtures = ['request_data_11.json', 'personal_data.json']
@@ -60,4 +61,4 @@ class Request11Test(TestCase):
         self.assertEqual(len(response.context['requests']), 10)
         r = response.context['requests']
         r_first = r[0].id
-        self.assertEqual(r_first, 11)
+        self.assertEqual(r_first, 12) #with +1 requestwhen test called
