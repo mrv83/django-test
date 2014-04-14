@@ -68,7 +68,7 @@ MEDIA_URL = ''
 # Example: "/var/www/example.com/static/"
 
 STATIC_ROOT = root('django_tests', 'static_root')
-# STATIC_ROOT = '/home/mrv/PycharmProjects/django-test/django_tests/static'
+# STATIC_ROOT = '/home/mrv/PycharmProjects/django_test/django_tests/static'
 STATIC_URL = '/static/'
 
 # URL prefix for static files.
@@ -78,7 +78,7 @@ STATIC_URL = '/static/'
 # Additional locations of static files
 STATICFILES_DIRS = (
     # root('django_tests', 'static'),
-    root('django_tests/static'),
+    root('django_tests', 'static'),
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -119,7 +119,7 @@ WSGI_APPLICATION = 'django_tests.wsgi.application'
 
 TEMPLATE_DIRS = (
     # "/templates/"
-    root('django_tests/templates'),
+    root('django_tests', 'templates'),
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
