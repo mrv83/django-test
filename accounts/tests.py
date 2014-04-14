@@ -12,7 +12,7 @@ from models import PersonalData, RequestData
 
 
 class SimpleTest(TestCase):
-    fixtures = ['personal_data.json']
+    fixtures = ['initial_data.json']
 
     def test_data_found(self):
         me = PersonalData.objects.get(pk=1)
@@ -34,7 +34,7 @@ class SimpleTest(TestCase):
         self.assertEqual(response.context['me'], me)
 
 class Request0Test(TestCase):
-    fixtures = ['personal_data.json']
+    fixtures = ['initial_data.json']
 
     def test_request_0(self):
         base_url = reverse('home')
@@ -43,7 +43,7 @@ class Request0Test(TestCase):
         self.assertEqual(len(response.context['requests']), 1)
 
 class Request5Test(TestCase):
-    fixtures = ['request_data_5.json', 'personal_data.json']
+    fixtures = ['request_data_5.json', 'initial_data.json']
 
     def test_request_5(self):
         base_url = reverse('home')
@@ -52,7 +52,7 @@ class Request5Test(TestCase):
         self.assertEqual(len(response.context['requests']), 6) #with +1 requestwhen test called
 
 class Request11Test(TestCase):
-    fixtures = ['request_data_11.json', 'personal_data.json']
+    fixtures = ['request_data_11.json', 'initial_data.json']
 
     def test_request_11(self):
         base_url = reverse('home')
