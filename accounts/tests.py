@@ -5,6 +5,11 @@ when you run "manage.py test".
 Replace this with more appropriate tests for your application.
 """
 import datetime
+from django.core import management
+
+from accounts.middleware import RequestMiddleware
+
+from django.test.client import RequestFactory
 
 from django.test import TestCase
 from django.core.urlresolvers import reverse
@@ -33,28 +38,34 @@ class SimpleTest(TestCase):
         me = PersonalData.objects.get(pk=1)
         self.assertEqual(response.context['me'], me)
 
-class Request0Test(TestCase):
+class RequestTest(TestCase):
     fixtures = ['initial_data.json']
 
-    def test_request_0(self):
+    def test_request_0_record_in_db(self):
         base_url = reverse('home')
         response = self.client.get(base_url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.context['requests']), 1)
 
-class Request5Test(TestCase):
-    fixtures = ['request_data_5.json', 'initial_data.json']
+    def test_middleware(self):
+        pre_count = RequestData.objects.all().count()
+        self.factory = RequestFactory()
+        self.middleware = RequestMiddleware()
+        request = self.factory.get('/customer/details')
+        request.session = {}
+        response = self.middleware.process_request(request)
+        post_count = RequestData.objects.all().count()
+        self.assertEquals(post_count, pre_count+1)
 
-    def test_request_5(self):
+    def test_request_5_record_in_db(self):
+        management.call_command('loaddata', 'request_data_5.json', verbosity=0)
         base_url = reverse('home')
         response = self.client.get(base_url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.context['requests']), 6) #with +1 requestwhen test called
 
-class Request11Test(TestCase):
-    fixtures = ['request_data_11.json', 'initial_data.json']
-
-    def test_request_11(self):
+    def test_request_11_record_in_db(self):
+        management.call_command('loaddata', 'request_data_11.json', verbosity=0)
         base_url = reverse('home')
         response = self.client.get(base_url)
         self.assertEqual(response.status_code, 200)
