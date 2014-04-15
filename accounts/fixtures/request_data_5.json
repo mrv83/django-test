@@ -1,6 +1,6 @@
 [
   {
-    "model": "accounts.Request_data",
+    "model": "accounts.RequestData",
     "pk": 1,
     "fields": {
       "path": "/",
@@ -9,7 +9,7 @@
     }
   },
   {
-    "model": "accounts.Request_data",
+    "model": "accounts.RequestData",
     "pk": 2,
     "fields": {
       "path": "/",
@@ -18,7 +18,7 @@
     }
   },
   {
-    "model": "accounts.Request_data",
+    "model": "accounts.RequestData",
     "pk": 3,
     "fields": {
       "path": "/",
@@ -27,7 +27,7 @@
     }
   },
   {
-    "model": "accounts.Request_data",
+    "model": "accounts.RequestData",
     "pk": 4,
     "fields": {
       "path": "/",
@@ -36,7 +36,7 @@
     }
   },
     {
-    "model": "accounts.Request_data",
+    "model": "accounts.RequestData",
     "pk": 5,
     "fields": {
       "path": "/",

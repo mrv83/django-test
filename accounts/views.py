@@ -1,10 +1,7 @@
 from django.shortcuts import render_to_response, get_object_or_404
-from accounts.models import Personal_data, Request_data
-from django_tests.settings import STATIC_ROOT
+from accounts.models import PersonalData, RequestData
 
 def personal_data_output(request):
-    # me = Personal_data.objects.get(pk=1)
-    me = get_object_or_404(Personal_data, pk=1)
-    requests = Request_data.objects.all().order_by('-time_request')[:10]
-    # print(STATIC_ROOT)
-    return render_to_response('base.html', {'me': me, 'requests': requests})
+    me = get_object_or_404(PersonalData, pk=1)
+    requests = RequestData.objects.all().order_by('-time_request')[:10]
+    return render_to_response('content.html', {'me': me, 'requests': requests})
