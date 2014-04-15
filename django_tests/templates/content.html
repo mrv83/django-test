@@ -1,3 +1,4 @@
+{% extends 'base.html' %}
 {% block for_css %}
     {% load static from staticfiles %}
     <link href="{% static 'css/base.css' %}" rel="stylesheet">
@@ -25,8 +26,6 @@
             <textarea rows="4" cols="50" readonly>{{ me.other_contact }}</textarea>
         </div>
         <hr>
-        {% for r in requests %}
-            <p><a href="{{ r.path }}">Request: "{{ r.path }}"    Method: {{ r.method_request }}   at: {{ r.time_request }}</a></p>
-        {% endfor %}
+        <a href="{% url 'requests' %}">requests</a>
     </div>
 {% endblock content %}

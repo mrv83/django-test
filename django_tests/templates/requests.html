@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+    {% for r in requests %}
+        <p><a href="{{ r.path }}">Request: "{{ r.path }}"    Method: {{ r.method_request }}   at: {{ r.time_request }}
+        </a></p>
+    {% endfor %}
+    <br><br>
+    <a href="{% url 'home' %}">back to main page</a>
+{% endblock content %}
