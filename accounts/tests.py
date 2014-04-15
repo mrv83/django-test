@@ -43,7 +43,7 @@ class RequestTest(TestCase):
     fixtures = ['initial_data.json']
 
     def test_request_0_record_in_db(self):
-        base_url = reverse('home')
+        base_url = reverse('requests')
         response = self.client.get(base_url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.context['requests']), 1)
@@ -52,7 +52,7 @@ class RequestTest(TestCase):
         pre_count = RequestData.objects.all().count()
         self.factory = RequestFactory()
         self.middleware = RequestMiddleware()
-        request = self.factory.get('/customer/details')
+        request = self.factory.get('/requests/')
         request.session = {}
         response = self.middleware.process_request(request)
         post_count = RequestData.objects.all().count()
@@ -60,14 +60,14 @@ class RequestTest(TestCase):
 
     def test_request_5_record_in_db(self):
         management.call_command('loaddata', 'request_data_5.json', verbosity=0)
-        base_url = reverse('home')
+        base_url = reverse('requests')
         response = self.client.get(base_url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.context['requests']), 6)  # with +1 request when test called
 
     def test_request_11_record_in_db(self):
         management.call_command('loaddata', 'request_data_11.json', verbosity=0)
-        base_url = reverse('home')
+        base_url = reverse('requests')
         response = self.client.get(base_url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.context['requests']), 10)
