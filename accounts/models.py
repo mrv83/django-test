@@ -2,6 +2,7 @@ from django.db import models
 
 # Create your models here.
 
+
 class PersonalData(models.Model):
     name = models.CharField(max_length=32, default='')
     surname = models.CharField(max_length=32, default='')
@@ -11,6 +12,7 @@ class PersonalData(models.Model):
     jabber = models.EmailField()
     skype = models.CharField(max_length=32, blank=True, default='')
     other_contact = models.TextField(max_length=1024, blank=True, default='')
+
 
 class RequestData(models.Model):
     path = models.CharField(max_length=256)

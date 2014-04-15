@@ -38,6 +38,7 @@ class SimpleTest(TestCase):
         me = PersonalData.objects.get(pk=1)
         self.assertEqual(response.context['me'], me)
 
+
 class RequestTest(TestCase):
     fixtures = ['initial_data.json']
 
@@ -62,7 +63,7 @@ class RequestTest(TestCase):
         base_url = reverse('home')
         response = self.client.get(base_url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.context['requests']), 6) #with +1 requestwhen test called
+        self.assertEqual(len(response.context['requests']), 6)  # with +1 request when test called
 
     def test_request_11_record_in_db(self):
         management.call_command('loaddata', 'request_data_11.json', verbosity=0)
@@ -72,4 +73,4 @@ class RequestTest(TestCase):
         self.assertEqual(len(response.context['requests']), 10)
         r = response.context['requests']
         r_first = r[0].id
-        self.assertEqual(r_first, 12) #with +1 requestwhen test called
+        self.assertEqual(r_first, 12)  # with +1 request when test called
