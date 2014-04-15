@@ -15,6 +15,8 @@ from django.test import TestCase
 from django.core.urlresolvers import reverse
 from models import PersonalData, RequestData
 
+from django_tests import settings
+
 
 class SimpleTest(TestCase):
     fixtures = ['initial_data.json']
@@ -74,3 +76,14 @@ class RequestTest(TestCase):
         r = response.context['requests']
         r_first = r[0].id
         self.assertEqual(r_first, 12)  # with +1 request when test called
+
+
+class TemplateContextProcessorTest(TestCase):
+    fixtures = ['initial_data.json']
+
+    def test_data_from_context_processor_exist(self):
+        base_url = reverse('home')
+        response = self.client.get(base_url)
+        r = response.context['settings']
+        self.assertEquals(r.TEMPLATE_CONTEXT_PROCESSORS, settings.TEMPLATE_CONTEXT_PROCESSORS)
+        self.assertEquals(response.context['settings'], settings)
