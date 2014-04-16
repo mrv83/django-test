@@ -1,11 +1,6 @@
-"""
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
+# coding=utf-8
 
-Replace this with more appropriate tests for your application.
-"""
 import datetime
-from django.core import management
 
 from accounts.middleware import RequestMiddleware
 
@@ -56,21 +51,29 @@ class RequestTest(TestCase):
         request.session = {}
         response = self.middleware.process_request(request)
         post_count = RequestData.objects.all().count()
-        self.assertEquals(post_count, pre_count+1)
+        self.assertEquals(post_count, pre_count + 1)
 
     def test_request_5_record_in_db(self):
-        management.call_command('loaddata', 'request_data_5.json', verbosity=0)
+        for x in range(0, 5):
+            r = RequestData()
+            r.path = '/'
+            r.method_request = 'GET'
+            r.save()
         base_url = reverse('requests')
         response = self.client.get(base_url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.context['requests']), 6)  # with +1 request when test called
 
     def test_request_11_record_in_db(self):
-        management.call_command('loaddata', 'request_data_11.json', verbosity=0)
+        for x in range(0, 10):
+            r = RequestData()
+            r.path = '/'
+            r.method_request = 'GET'
+            r.save()
         base_url = reverse('requests')
         response = self.client.get(base_url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.context['requests']), 10)
         r = response.context['requests']
         r_first = r[0].id
-        self.assertEqual(r_first, 12)  # with +1 request when test called
+        self.assertEqual(r_first, 11)  # with +1 request when test called
