@@ -1,9 +1,5 @@
-"""
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
+# coding=utf-8
 
-Replace this with more appropriate tests for your application.
-"""
 import datetime
 from django.core import management
 
@@ -56,7 +52,7 @@ class RequestTest(TestCase):
         request.session = {}
         response = self.middleware.process_request(request)
         post_count = RequestData.objects.all().count()
-        self.assertEquals(post_count, pre_count+1)
+        self.assertEquals(post_count, pre_count + 1)
 
     def test_request_5_record_in_db(self):
         management.call_command('loaddata', 'request_data_5.json', verbosity=0)
