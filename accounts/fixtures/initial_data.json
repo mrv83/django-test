@@ -12,5 +12,14 @@
       "skype": "mrv830907",
       "other_contact": "none"
     }
+  },
+    {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "username": "test",
+      "password": "test",
+      "email": "lysenko.viktor.83@gmail.com"
+    }
   }
 ]

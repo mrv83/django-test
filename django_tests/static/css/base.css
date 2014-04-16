@@ -13,5 +13,13 @@
     float: right;
 }
 .test_col_cont {
-    height: 170px;
+    height: 420px;
+}
+.top_menu {
+    width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.margin_menu_right {
+    margin-left: 800px;
 }

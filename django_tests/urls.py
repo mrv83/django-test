@@ -8,6 +8,9 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = patterns('',
     url(r'^$', 'accounts.views.personal_data_output', name='home'),
     url(r'^requests/$', 'accounts.views.requests_output', name='requests'),
+    url(r'^login/$', 'django.contrib.auth.views.login', name='login'),
+    url(r'^logout/$', 'django.contrib.auth.views.logout', name='logout'),
+    url(r'^edit/$', 'accounts.views.personal_data_edit', name='edit'),
     # Examples:
     # url(r'^$', 'django_tests.views.home', name='home'),
     # url(r'^django_tests/', include('django_tests.foo.urls')),
