@@ -78,7 +78,7 @@ class RequestTest(TestCase):
         self.assertEqual(len(response.context['requests']), 10)
         r = response.context['requests']
         r_first = r[0].id
-        self.assertEqual(r_first, 11)  # with +1 request when test called        self.assertEqual(r_first, 12)  # with +1 request when test called
+        self.assertEqual(r_first, 11)  # with +1 request when test called
 
 
 class TemplateContextProcessorTest(TestCase):
