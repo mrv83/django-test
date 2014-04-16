@@ -1,6 +1,7 @@
 # coding=utf-8
 
 import datetime
+from django.contrib.auth.models import User
 
 from accounts.middleware import RequestMiddleware
 
@@ -77,3 +78,22 @@ class RequestTest(TestCase):
         r = response.context['requests']
         r_first = r[0].id
         self.assertEqual(r_first, 11)  # with +1 request when test called
+
+
+class RegistrationTest(TestCase):
+
+    def test_secure_page(self):
+        user = User.objects.create_user('test', 'test@test.com', 'test')
+        self.client.login(username='test', password='test')
+        base_url = reverse('home')
+        login_link = reverse('login')
+        logout_link = reverse('logout')
+        edit_link = reverse('edit')
+        response = self.client.get(base_url)
+        self.assertNotContains(response, login_link)
+        self.assertContains(response, logout_link)
+        self.assertContains(response, edit_link)
+        self.client.logout()
+        self.assertContains(response, login_link)
+        self.assertNotContains(response, logout_link)
+        self.assertNotContains(response, edit_link)
