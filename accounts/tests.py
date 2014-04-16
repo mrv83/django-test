@@ -15,7 +15,7 @@ from django.test import TestCase
 from django.core.urlresolvers import reverse
 from models import PersonalData, RequestData
 
-from django_tests import settings
+from django.conf import settings
 
 
 class SimpleTest(TestCase):
@@ -86,4 +86,4 @@ class TemplateContextProcessorTest(TestCase):
         response = self.client.get(base_url)
         r = response.context['settings']
         self.assertEquals(r.TEMPLATE_CONTEXT_PROCESSORS, settings.TEMPLATE_CONTEXT_PROCESSORS)
-        self.assertEquals(response.context['settings'], settings)
+        self.assertEquals(r, settings)
