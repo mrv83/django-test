@@ -1,7 +1,12 @@
 {% extends "base.html" %}
 
-{% block content %}
+{% block for_css %}
+{#    {% load static from staticfiles %}#}
+{#    <link href="{% static 'css/base.css' %}" rel="stylesheet">#}
+{% endblock for_css %}
 
+{% block content %}
+<div class="content">
 {% if form.errors %}
 <p>Your username and password didn't match. Please try again.</p>
 {% endif %}
@@ -22,7 +27,6 @@
 <input type="submit" value="login" />
 <input type="hidden" name="next" value="{% url 'edit' %}" />
 </form>
-
-    <a href="{% url 'registration' %}">Registration</a>
+</div>
 
 {% endblock %}

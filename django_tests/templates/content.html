@@ -1,7 +1,6 @@
 {% extends 'base.html' %}
+
 {% block for_css %}
-    {% load static from staticfiles %}
-    <link href="{% static 'css/base.css' %}" rel="stylesheet">
 {% endblock for_css %}
 
 {% block content %}
@@ -26,9 +25,14 @@
                 <p>skype: {{ me.skype }}</p>
                 <p>Other contacts:</p>
             </div>
-            <textarea rows="4" cols="50" readonly>{{ me.other_contact }}</textarea>
+            <label>
+                <textarea rows="4" cols="50" readonly>{{ me.other_contact }}</textarea>
+            </label>
+
             <p>Bio</p>
-            <textarea rows="4" cols="50" readonly>{{ me.bio }}</textarea>
+            <label>
+                <textarea rows="4" cols="50" readonly>{{ me.bio }}</textarea>
+            </label>
         </div>
         <div style="float: none"></div>
         <hr>
