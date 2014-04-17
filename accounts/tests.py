@@ -1,6 +1,7 @@
 # coding=utf-8
-
 import datetime
+
+from accounts.context_processor import all_settings
 
 from accounts.middleware import RequestMiddleware
 
@@ -85,8 +86,8 @@ class TemplateContextProcessorTest(TestCase):
     fixtures = ['initial_data.json']
 
     def test_data_from_context_processor_exist(self):
-        base_url = reverse('home')
-        response = self.client.get(base_url)
-        r = response.context['settings']
-        self.assertEquals(r.TEMPLATE_CONTEXT_PROCESSORS, settings.TEMPLATE_CONTEXT_PROCESSORS)
-        self.assertEquals(r, settings)
+        self.factory = RequestFactory()
+        request = self.factory.get('/')
+        context = all_settings(request)
+        self.assertEquals(context['settings'], settings)
+        self.assertTrue("accounts.context_processor.all_settings" in settings.TEMPLATE_CONTEXT_PROCESSORS)
