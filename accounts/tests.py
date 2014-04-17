@@ -2,6 +2,7 @@
 
 import datetime
 from django.contrib.auth.models import User
+from accounts.forms import PersonalDataForm
 
 from accounts.middleware import RequestMiddleware
 
@@ -81,19 +82,65 @@ class RequestTest(TestCase):
 
 
 class RegistrationTest(TestCase):
+    fixtures = ['initial_data.json']
 
     def test_secure_page(self):
-        user = User.objects.create_user('test', 'test@test.com', 'test')
-        self.client.login(username='test', password='test')
+
+        self.user = User.objects.create_user('test', password='test')
         base_url = reverse('home')
         login_link = reverse('login')
         logout_link = reverse('logout')
         edit_link = reverse('edit')
+
+        login = self.client.login(username='test', password='test')
+        self.assertTrue(login)
         response = self.client.get(base_url)
+        self.assertTrue(login)
+        self.assertEqual(response.status_code, 200)
         self.assertNotContains(response, login_link)
         self.assertContains(response, logout_link)
         self.assertContains(response, edit_link)
-        self.client.logout()
+        logout = self.client.logout()
+        response = self.client.get(base_url)
         self.assertContains(response, login_link)
         self.assertNotContains(response, logout_link)
         self.assertNotContains(response, edit_link)
+
+    def test_form(self):
+        self.user = User.objects.create_user('test', password='test')
+        login = self.client.login(username='test', password='test')
+        edit_link = reverse('edit')
+        me = PersonalData.objects.get(pk=1)
+        me_dict = me.__dict__
+        form = PersonalDataForm(data=me_dict)
+        response = self.client.post(edit_link, {'form': form})
+        self.assertEquals(response.status_code, 200)
+
+        for k in ["name", "surname", "bio", "skype", "other_contact", "userpic"]:
+            me = PersonalData.objects.get(pk=1)
+            me_dict = me.__dict__
+            me_dict[k] = 'aaa111'
+            form = PersonalDataForm(data=me_dict)
+            response = self.client.post(edit_link, {'form': form})
+            self.assertTrue(form.is_valid())
+        for k in ["email", 'jabber']:
+            me = PersonalData.objects.get(pk=1)
+            me_dict = me.__dict__
+            me_dict[k] = 'viktor.83@gmail.com'
+            form = PersonalDataForm(data=me_dict)
+            response = self.client.post(edit_link, {'form': form})
+            self.assertTrue(form.is_valid())
+        for k in ["name", "surname"]:
+            me = PersonalData.objects.get(pk=1)
+            me_dict = me.__dict__
+            me_dict[k] = ''
+            form = PersonalDataForm(data=me_dict)
+            response = self.client.post(edit_link, {'form': form})
+            self.assertFalse(form.is_valid())
+        for k in ["email", "jabber"]:
+            me = PersonalData.objects.get(pk=1)
+            me_dict = me.__dict__
+            me_dict[k] = 'aaa'
+            form = PersonalDataForm(data=me_dict)
+            response = self.client.post(edit_link, {'form': form})
+            self.assertFalse(form.is_valid())
