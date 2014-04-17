@@ -11,6 +11,7 @@ urlpatterns = patterns('',
     url(r'^login/$', 'django.contrib.auth.views.login', name='login'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', name='logout'),
     url(r'^edit/$', 'accounts.views.personal_data_edit', name='edit'),
+    url(r'^registraion/$', 'accounts.views.registration', name='registration'),
     # Examples:
     # url(r'^$', 'django_tests.views.home', name='home'),
     # url(r'^django_tests/', include('django_tests.foo.urls')),

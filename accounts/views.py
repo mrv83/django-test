@@ -1,7 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from accounts.models import PersonalData, RequestData
-from accounts.forms import PersonalDataForm
+from accounts.forms import PersonalDataForm, RegisterUser
+from django.template import RequestContext
 
 
 def personal_data_output(request):
@@ -31,3 +32,13 @@ def personal_data_edit(request):
 
     form = PersonalDataForm(me)
     return render_to_response('edit.html', {'form': form})
+
+
+def registration(request):
+    if request.method ==  'POST':
+        form = RegisterUser(data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+    form = RegisterUser()
+    return render_to_response('registration.html', {'form': form}, context_instance=RequestContext(request))
