@@ -1,30 +1,40 @@
 {% extends 'base.html' %}
+
 {% block for_css %}
-    {% load static from staticfiles %}
-    <link href="{% static 'css/base.css' %}" rel="stylesheet">
 {% endblock for_css %}
 
 {% block content %}
     <div class="content">
         <div><h3>42 Coffee Cups Test Assignment</h3></div>
-        <div class="test_col test_col_left">
-            <div class="test_col_cont">
+        <div class="test_col test_col_left test_col_cont">
+            <div>
                 <p>Name: {{ me.name }}</p>
                 <p>Last name: {{ me.surname }}</p>
                 <p>Date of birth: {{ me.date_of_birth }}</p>
             </div>
-            <textarea rows="4" cols="50" readonly>{{ me.bio }}</textarea>
+            <div>
+                <img src="{{MEDIA_URL}}{{ me.userpic }}" class="avatar">
+            </div>
+
         </div>
-        <div class="test_col test_col_right">
-            <div class="test_col_cont">
+        <div class="test_col test_col_right test_col_cont">
+            <div>
                 <p>Contacts:</p>
                 <p>email: {{ me.email }}</p>
                 <p>jabber: {{ me.jabber }}</p>
                 <p>skype: {{ me.skype }}</p>
                 <p>Other contacts:</p>
             </div>
-            <textarea rows="4" cols="50" readonly>{{ me.other_contact }}</textarea>
+            <label>
+                <textarea rows="4" cols="50" readonly>{{ me.other_contact }}</textarea>
+            </label>
+
+            <p>Bio</p>
+            <label>
+                <textarea rows="4" cols="50" readonly>{{ me.bio }}</textarea>
+            </label>
         </div>
+        <div style="float: none"></div>
         <hr>
         <a href="{% url 'requests' %}">requests</a>
     </div>

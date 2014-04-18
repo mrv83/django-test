@@ -1,14 +1,21 @@
 <!DOCTYPE html>
-{% load static from staticfiles %}
+
 <html>
 <head>
     <title>Base page</title>
+    {% load static from staticfiles %}
+    <link href="{% static 'css/base.css' %}" rel="stylesheet">
 
     {% block for_css %}
     {% endblock for_css %}
 
 </head>
 <body>
+<div class="top_menu">
+    <div class="margin_menu_right">
+        {% include 'menu.html' %}
+    </div>
+</div>
 
 {% block content %}
 {% endblock content %}

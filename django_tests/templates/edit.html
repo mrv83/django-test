@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block for_css %}
+{% endblock for_css %}
+
+{% block content %}
+    <div class="content">
+
+        <form method="POST" action="{% url 'edit' %}" enctype="multipart/form-data">{% csrf_token %}
+            <div><h3>42 Coffee Cups Test Assignment</h3></div>
+            <div class="test_col test_col_left test_col_cont">
+                <table>
+                    <tr>
+                        <td>Name: </td><td>{{ form.name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Surname: </td><td>{{ form.surname }}</td>
+                    </tr>
+                    <tr>
+                        <td>Date of birth:</td><td>{{ form.date_of_birth }}</td>
+                    </tr>
+                </table>
+                <div>
+                    <p>Avatar:{{ form.userpic }}</p>
+                    {% if form.userpic.value != Null %}
+                        <img src="{{ MEDIA_URL }}{{ form.userpic.value }}" class="avatar">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="test_col test_col_right test_col_cont">
+                <table>
+                    <tr>
+                        <td>Email:</td><td>{{ form.email }}</td>
+                    </tr>
+                    <tr>
+                        <td>Jabber:</td><td>{{ form.jabber }}</td>
+                    </tr>
+                    <tr>
+                        <td>Skype:</td><td>{{ form.skype }}</td>
+                    </tr>
+                </table>
+                <p>Other contacts:</p>
+                <label>
+                    {{ form.other_contact }}
+                </label>
+                <p>Bio</p>
+                <label>
+                    {{ form.bio }}
+                </label>
+            </div>
+            <button type="submit" value="Submit">Submit</button>
+            <button type="reset" value="Reset">Reset</button>
+        </form>
+        <div style="float: none"></div>
+        <hr>
+        <a href="{% url 'requests' %}">requests</a>
+    </div>
+
+{% endblock content %}
