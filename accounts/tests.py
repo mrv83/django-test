@@ -1,15 +1,14 @@
 # coding=utf-8
 
 import datetime
+
 from django.contrib.auth.models import User
-from accounts.forms import PersonalDataForm
-
-from accounts.middleware import RequestMiddleware
-
 from django.test.client import RequestFactory
-
 from django.test import TestCase
 from django.core.urlresolvers import reverse
+
+from accounts.forms import PersonalDataForm
+from accounts.middleware import RequestMiddleware
 from models import PersonalData, RequestData
 
 
