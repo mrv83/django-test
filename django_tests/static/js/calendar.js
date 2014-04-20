@@ -33,7 +33,7 @@ function sameOrigin(url) {
         !(/^(\/\/|http:|https:).*/.test(url));
 }
 $.ajaxSetup({
-    beforeSend: function(xhr, settings) {
+    beforeSend: function (xhr, settings) {
         var csrftoken = getCookie('csrftoken');
         if (!csrfSafeMethod(settings.type) && sameOrigin(settings.url)) {
             // Send the token to same-origin, relative URLs only.
@@ -45,35 +45,35 @@ $.ajaxSetup({
 });
 
 
-$(document).ready(function() {
+$(document).ready(function () {
 
-    $("#id_date_of_birth").datepicker({minDate:-36500,maxDate:0,dateFormat:'yy-mm-dd', showButtonPanel:true});
+    $("#id_date_of_birth").datepicker({minDate: -36500, maxDate: 0, dateFormat: 'yy-mm-dd', showButtonPanel: true});
 
     var options = {
         url: "/send_data/",
-        beforeSubmit: function() {
+        beforeSubmit: function () {
             document.getElementById("status_msg").innerHTML = 'Status: saving data....';
             $("#personal_data_form").find(":input").attr("disabled", true);
             alert('Debug message: before ajax submit');
         },
         success: function (data) {
-                    alert('Debug message: request done');
-                    $("#personal_data_form").find(":input").attr("disabled", false);
-                    if (data=='error') {
-                        document.getElementById("reset_form").click();
-                        document.getElementById("status_msg").innerHTML = 'Status: Data error';
-                        alert('Debug message: incorrect data');
-                    }
-                    else document.getElementById("status_msg").innerHTML = 'Status: success, data saved';
-                },
+            alert('Debug message: request done');
+            $("#personal_data_form").find(":input").attr("disabled", false);
+            if (data == 'error') {
+                document.getElementById("reset_form").click();
+                document.getElementById("status_msg").innerHTML = 'Status: Data error';
+                alert('Debug message: incorrect data');
+            }
+            else document.getElementById("status_msg").innerHTML = 'Status: success, data saved';
+        },
         error: function (data) {
             document.getElementById("status_msg").innerHTML = 'Status: Ajax error';
             $("#personal_data_form").find(":input").attr("disabled", false);
             alert('Debug message: ajax error');
         }
-    }
+    };
 
-    $("#personal_data_form").submit(function() {
+    $("#personal_data_form").submit(function () {
         $(this).ajaxSubmit(options);
         return false;
     });

@@ -6,7 +6,7 @@
 {% block content %}
     <div class="content">
 
-        <form id='personal_data_form' action="{% url 'edit' %}" name='form' method="POST" enctype="multipart/form-data">
+        <form id='personal_data_form' name='form' method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <div><h3>42 Coffee Cups Test Assignment</h3></div>
             <div class="test_col test_col_left test_col_cont">
@@ -49,7 +49,7 @@
                     {{ form.bio }}
                 </label>
             </div>
-            <button type="submit" name="submit" value="Submit"/>Submit</button>
+            <button type="submit" name="submit" value="Submit">Submit</button>
             <button type="reset" id="reset_form" name="reset" value="Reset">Reset</button>
             <label id="status_msg">Status: </label>
         </form>

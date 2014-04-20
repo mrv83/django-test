@@ -1,6 +1,5 @@
 # coding=utf-8
 import datetime
-import json
 
 from django.contrib.auth.models import User
 from django.test.client import RequestFactory
@@ -155,14 +154,15 @@ class RegistrationTest(TestCase):
 
 
 class CalendarTest(TestCase):
+    fixtures = ['initial_data.json']
+
     def test_ajax_request(self):
         self.user = User.objects.create_user('test', password='test')
         login = self.client.login(username='test', password='test')
-        b_data = {'year': 2014, 'month': 1, 'day': 1}
-        j_b_data = json.dumps(b_data)
-        response = self.client.post('/js/send_request/', content_type='application/json', data=j_b_data)
-        self.assertEquals(datetime.date(2014, 1, 1), PersonalData.objects.get(pk=1).date_of_birth)
-        b_data = {'year': 2015, 'month': 1, 'day': 1}
-        j_b_data = json.dumps(b_data)
-        response = self.client.post('/js/send_request/', content_type='application/json', data=j_b_data)
-        self.assertNotEquals(datetime.date(2015, 1, 1), PersonalData.objects.get(pk=1).date_of_birth)
+        edit_link = reverse('send_data')
+        me = PersonalData.objects.get(pk=1)
+        me_dict = me.__dict__
+        form = PersonalDataForm(data=me_dict)
+        response = self.client.post(edit_link, {'form': form})
+        self.assertEquals(response.status_code, 200)
+        self.assertContains(response, 'error')
