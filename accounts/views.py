@@ -1,7 +1,10 @@
 # coding=utf-8
+import datetime
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
 
 from accounts.models import PersonalData, RequestData
 from accounts.forms import PersonalDataForm, RegisterUser
@@ -41,3 +44,15 @@ def registration(request):
             return redirect('home')
     form = RegisterUser()
     return render_to_response('registration.html', {'form': form}, context_instance=RequestContext(request))
+
+
+@login_required
+def send_data(request):
+    status = 'error'
+    me = PersonalData.objects.get(pk=1)
+    if request.is_ajax():
+        form = PersonalDataForm(request.POST, request.FILES, instance=me)
+        if form.is_valid():
+            form.save()
+            status = 'done'
+    return HttpResponse(status)
