@@ -151,3 +151,18 @@ class RegistrationTest(TestCase):
             me_dict[k] = 'aaa'
             form = PersonalDataForm(data=me_dict)
             self.assertFalse(form.is_valid())
+
+
+class CalendarTest(TestCase):
+    fixtures = ['initial_data.json']
+
+    def test_ajax_request(self):
+        self.user = User.objects.create_user('test', password='test')
+        login = self.client.login(username='test', password='test')
+        edit_link = reverse('send_data')
+        me = PersonalData.objects.get(pk=1)
+        me_dict = me.__dict__
+        form = PersonalDataForm(data=me_dict)
+        response = self.client.post(edit_link, {'form': form})
+        self.assertEquals(response.status_code, 200)
+        self.assertContains(response, 'error')

@@ -12,5 +12,18 @@
       "skype": "mrv830907",
       "other_contact": "none"
     }
-  }
+  },
+    {"pk": 1,
+        "model": "auth.user",
+        "fields": {
+            "username": "admin",
+            "is_active": true,
+            "is_superuser": true,
+            "is_staff": true,
+            "groups": [],
+            "user_permissions": [],
+            "password": "pbkdf2_sha256$10000$8YhLrJjWiu6m$ON2q650PfYdn9fQfjxj9bo49snW6BnwAMlniu4SEJ54=",
+            "email": "lysenko.viktor.83@gmail.com"
+        }
+    }
 ]
