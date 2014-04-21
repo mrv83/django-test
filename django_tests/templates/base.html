@@ -6,7 +6,6 @@
     {% load static from staticfiles %}
 
     <link href="{% static 'css/base.css' %}" rel="stylesheet">
-    <link href="{% static 'css/jquery-ui-1.10.4.custom.css' %}" rel="stylesheet">
 
     {% block for_css %}
     {% endblock for_css %}
@@ -21,11 +20,6 @@
 
 {% block content %}
 {% endblock content %}
-
-<script type="text/javascript" src="{% static 'js/jquery-1.10.2.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/jquery-ui-1.10.4.custom.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/jquery.form.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/calendar.js' %}"></script>
 
 {% block for_js %}
 {% endblock for_js %}
