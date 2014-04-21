@@ -28,10 +28,10 @@ def personal_data_edit(request):
             return redirect('home')
         else:
             form = PersonalDataForm(instance=me)
-            return render_to_response('edit.html', {'form': form}, context_instance=RequestContext(request))
+            return render_to_response('edit.html', {'me': me, 'form': form}, context_instance=RequestContext(request))
     else:
         form = PersonalDataForm(instance=me)
-        return render_to_response('edit.html', {'form': form}, context_instance=RequestContext(request))
+        return render_to_response('edit.html', {'me': me, 'form': form}, context_instance=RequestContext(request))
 
 
 def registration(request):
