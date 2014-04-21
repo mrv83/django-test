@@ -5,10 +5,12 @@
 {% endblock for_css %}
 
 {% block content %}
+    {% load admin_edit %}
     <div class="content">
 
         <form id='personal_data_form' name='form' method="POST" enctype="multipart/form-data">
             {% csrf_token %}
+        <p><a href="{% admin_edit me %}">Edit with AdminTOOL</a></p>
             <div><h3>42 Coffee Cups Test Assignment</h3></div>
             <div class="test_col test_col_left test_col_cont">
                 <table>

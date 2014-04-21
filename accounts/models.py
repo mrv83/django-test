@@ -12,8 +12,14 @@ class PersonalData(models.Model):
     other_contact = models.TextField(max_length=1024, blank=True, default='')
     userpic = models.ImageField(upload_to='avatar', blank=True, null=True)
 
+    def __unicode__(self):
+        return self.name
+
 
 class RequestData(models.Model):
     path = models.CharField(max_length=256)
     method_request = models.CharField(max_length=16)
     time_request = models.DateField(auto_now_add=True)
+
+    def __unicode__(self):
+        return self.path

@@ -166,3 +166,17 @@ class CalendarTest(TestCase):
         response = self.client.post(edit_link, {'form': form})
         self.assertEquals(response.status_code, 200)
         self.assertContains(response, 'error')
+
+
+class TagTest(TestCase):
+    fixtures = ['initial_data.json']
+
+    def test_tag(self):
+        login = self.client.login(username='admin', password='admin')
+        edit_link = reverse('edit')
+        me = PersonalData.objects.get(pk=1)
+        me_dict = me.__dict__
+        form = PersonalDataForm(data=me_dict)
+        response = self.client.post(edit_link, {'form': form})
+        self.assertEquals(response.status_code, 200)
+        self.assertContains(response, '/admin/accounts/personaldata/1/')
