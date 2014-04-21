@@ -5,7 +5,7 @@ from django.shortcuts import render_to_response, get_object_or_404, redirect
 from django.template import RequestContext
 
 from accounts.models import PersonalData, RequestData
-from accounts.forms import PersonalDataForm, RegisterUser
+from accounts.forms import PersonalDataForm, RegisterUser, CalendarWidget
 
 
 def personal_data_output(request):
