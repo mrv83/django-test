@@ -2,6 +2,7 @@
 import datetime
 
 from django.contrib.auth.models import User
+from django.template import Template, Context
 from django.test.client import RequestFactory
 from django.test import TestCase
 from django.core.urlresolvers import reverse
@@ -172,11 +173,9 @@ class TagTest(TestCase):
     fixtures = ['initial_data.json']
 
     def test_tag(self):
-        login = self.client.login(username='admin', password='admin')
-        edit_link = reverse('edit')
         me = PersonalData.objects.get(pk=1)
-        me_dict = me.__dict__
-        form = PersonalDataForm(data=me_dict)
-        response = self.client.post(edit_link, {'form': form})
-        self.assertEquals(response.status_code, 200)
-        self.assertContains(response, '/admin/accounts/personaldata/1/')
+
+        t = Template('{% load admin_edit %} {% admin_edit me %}')
+        c = Context({'me': me})
+        rendered_tag = str(t.render(c))
+        self.assertTrue(rendered_tag.find('/admin/accounts/personaldata/1/') > -1)
