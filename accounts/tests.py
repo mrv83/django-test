@@ -188,7 +188,8 @@ class CommandTest(TestCase):
     def test_db_out_command(self):
         pipe = PIPE
         command = "python manage.py db_info"
-        proc = Popen(command, shell=True, stdin=pipe, stdout=pipe)
+        proc = Popen(command, shell=True, stdin=pipe, stdout=pipe, stderr=pipe)
+        proc.wait()
         res = ""
         if proc.returncode < 0:
             res = proc.stderr.read()
