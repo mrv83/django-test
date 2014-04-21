@@ -1,5 +1,6 @@
 # coding=utf-8
 import datetime
+from subprocess import PIPE, Popen
 
 from django.contrib.auth.models import User
 from django.test.client import RequestFactory
@@ -180,3 +181,18 @@ class TagTest(TestCase):
         response = self.client.post(edit_link, {'form': form})
         self.assertEquals(response.status_code, 200)
         self.assertContains(response, '/admin/accounts/personaldata/1/')
+
+
+class CommandTest(TestCase):
+
+    def test_db_out_command(self):
+        pipe = PIPE
+        command = "python manage.py db_info"
+        proc = Popen(command, shell=True, stdin=pipe, stdout=pipe)
+        res = ""
+        if proc.returncode < 0:
+            res = proc.stderr.read()
+            self.assertEqual(res, "")
+        else:
+            res = proc.stdout.read()
+            self.assertNotEqual(res, "")
