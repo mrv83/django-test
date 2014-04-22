@@ -14,7 +14,7 @@ from django.conf import settings
 from accounts.context_processor import all_settings
 from accounts.forms import PersonalDataForm
 from accounts.middleware import RequestMiddleware
-from models import PersonalData, RequestData
+from models import PersonalData, RequestData, DBAction
 
 
 class SimpleTest(TestCase):
@@ -260,3 +260,33 @@ class CommandTest(TestCase):
         self.assertEquals(sys.stderr.text, valid_stderr)
 
         sys.stdout, sys.stderr = saved_streams
+
+
+class SignalTest(TestCase):
+    fixtures = ['initial_data.json']
+
+    def test_create_signal(self):
+        log_pre_count = DBAction.objects.all().count()
+        me = PersonalData.objects.get(pk=1)
+        me.pk = 2
+        me.save()
+        log_post_count = DBAction.objects.all().count()
+        self.assertTrue(log_post_count == log_pre_count + 1)
+        self.assertTrue(DBAction.objects.get(pk=log_post_count).action_name == 'created')
+
+    def test_change_signal(self):
+        log_pre_count = DBAction.objects.all().count()
+        me = PersonalData.objects.get(pk=1)
+        me.name = 'aaa'
+        me.save()
+        log_post_count = DBAction.objects.all().count()
+        self.assertTrue(log_post_count == log_pre_count + 1)
+        self.assertTrue(DBAction.objects.get(pk=log_post_count).action_name == 'edited')
+
+    def test_delete_signal(self):
+        log_pre_count = DBAction.objects.all().count()
+        me = PersonalData.objects.get(pk=1)
+        me.delete()
+        log_post_count = DBAction.objects.all().count()
+        self.assertTrue(log_post_count == log_pre_count + 1)
+        self.assertTrue(DBAction.objects.get(pk=log_post_count).action_name == 'deleted')
