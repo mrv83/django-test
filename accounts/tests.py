@@ -191,9 +191,16 @@ class CommandTest(TestCase):
         proc = Popen(command, shell=True, stdin=pipe, stdout=pipe, stderr=pipe)
         proc.wait()
         res = ""
-        if proc.returncode < 0:
-            res = proc.stderr.read()
-            self.assertEqual(res, "")
-        else:
-            res = proc.stdout.read()
-            self.assertNotEqual(res, "")
+        self.assertEqual(proc.returncode, 0)
+        res = proc.stderr.read()
+        self.assertEqual(res, "")
+
+    def test_db_out_command_with_stderr(self):
+        pipe = PIPE
+        command = "python manage.py db_info --stderr"
+        proc = Popen(command, shell=True, stdin=pipe, stdout=pipe, stderr=pipe)
+        proc.wait()
+        res = ""
+        self.assertEqual(proc.returncode, 0)
+        res = proc.stderr.read()
+        self.assertNotEqual(res, "")
