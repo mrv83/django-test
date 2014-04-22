@@ -1,5 +1,6 @@
 # coding=utf-8
 import datetime
+from subprocess import PIPE, Popen
 
 from django.contrib.auth.models import User
 from django.template import Template, Context
@@ -187,3 +188,25 @@ class TagTest(TestCase):
         t = Template('{% load admin_edit %} {% admin_edit me %}')
         c = Context({'me': me})
         self.assertTrue(t.render(c).find('/admin/accounts/personaldata/1/') > -1)
+
+
+class CommandTest(TestCase):
+    def test_db_out_command(self):
+        pipe = PIPE
+        command = "python manage.py db_info"
+        proc = Popen(command, shell=True, stdin=pipe, stdout=pipe, stderr=pipe)
+        proc.wait()
+        res = ""
+        self.assertEqual(proc.returncode, 0)
+        res = proc.stderr.read()
+        self.assertEqual(res, "")
+
+    def test_db_out_command_with_stderr(self):
+        pipe = PIPE
+        command = "python manage.py db_info --stderr"
+        proc = Popen(command, shell=True, stdin=pipe, stdout=pipe, stderr=pipe)
+        proc.wait()
+        res = ""
+        self.assertEqual(proc.returncode, 0)
+        res = proc.stderr.read()
+        self.assertNotEqual(res, "")
