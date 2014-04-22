@@ -196,10 +196,12 @@ class CommandTest(TestCase):
         command = "python manage.py db_info"
         proc = Popen(command, shell=True, stdin=pipe, stdout=pipe, stderr=pipe)
         proc.wait()
-        # res_err = ""
-        # res_err = proc.stderr.read()
-        # res_out = ""
-        # res_out = proc.stdout.read()
+        res_err = ""
+        res_err = proc.stderr.read()
+        res_out = ""
+        res_out = proc.stdout.read()
+        print(res_err)
+        print(res_out)
         # self.assertEqual(res_err, "")
         # self.assertNotEqual(res_out, "")
 
@@ -208,9 +210,11 @@ class CommandTest(TestCase):
         command = "python manage.py db_info --stderr"
         proc = Popen(command, shell=True, stdin=pipe, stdout=pipe, stderr=pipe)
         proc.wait()
-        # res_err = ""
-        # res_err = proc.stderr.read()
-        # res_out = ""
-        # res_out = proc.stdout.read()
+        res_err = ""
+        res_err = proc.stderr.read()
+        print(res_err)
+        res_out = ""
+        res_out = proc.stdout.read()
+        print(res_out)
         # self.assertNotEqual(res_err, "")
         # self.assertNotEqual(res_out, "")
