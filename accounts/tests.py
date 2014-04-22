@@ -1,8 +1,10 @@
 # coding=utf-8
 import datetime
-from subprocess import PIPE, Popen
+import sys
 
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
+from django.core.management import call_command
 from django.template import Template, Context
 from django.test.client import RequestFactory
 from django.test import TestCase
@@ -191,30 +193,70 @@ class TagTest(TestCase):
 
 
 class CommandTest(TestCase):
+    class Output():
+
+        def __init__(self):
+            self.text = ''
+
+        def write(self, string):
+            self.text = self.text + string
+
+        def writelines(self, lines):
+            for line in lines:
+                self.write(line)
+
     def test_db_out_command(self):
-        pipe = PIPE
-        command = "python manage.py db_info"
-        proc = Popen(command, shell=True, stdin=pipe, stdout=pipe, stderr=pipe)
-        proc.wait()
-        res_err = ""
-        res_err = proc.stderr.read()
-        res_out = ""
-        res_out = proc.stdout.read()
-        print(res_err)
-        print(res_out)
-        # self.assertEqual(res_err, "")
-        # self.assertNotEqual(res_out, "")
+
+        command = "db_info"
+        saved_streams = sys.stdout, sys.stderr
+
+        sys.stdout = self.Output()
+        sys.stderr = self.Output()
+        has_errors = False
+
+        try:
+            call_command(command)
+        except:
+            has_errors = True
+
+        self.assertFalse(has_errors)
+
+        self.assertTrue(sys.stdout.text != "")
+        self.assertTrue(sys.stderr.text == "")
+
+        sys.stdout, sys.stderr = saved_streams
 
     def test_db_out_command_with_stderr(self):
-        pipe = PIPE
-        command = "python manage.py db_info --stderr"
-        proc = Popen(command, shell=True, stdin=pipe, stdout=pipe, stderr=pipe)
-        proc.wait()
-        res_err = ""
-        res_err = proc.stderr.read()
-        print(res_err)
-        res_out = ""
-        res_out = proc.stdout.read()
-        print(res_out)
-        # self.assertNotEqual(res_err, "")
-        # self.assertNotEqual(res_out, "")
+
+        command = "db_info"
+        saved_streams = sys.stdout, sys.stderr
+
+        sys.stdout = self.Output()
+        sys.stderr = self.Output()
+        has_errors = False
+
+        try:
+            call_command(command, stderr=True)
+        except:
+            has_errors = True
+
+        self.assertFalse(has_errors)
+
+        valid_stdout = ''
+        valid_stderr = ''
+
+        for table in ContentType.objects.all():
+            name = str(table)
+            count = str(table.model_class().objects.count())
+            row = 'Table: ' + name + '  object count: ' + count + '\n'
+            valid_stdout += row
+            row_e = 'error: ' + row
+            valid_stderr += row_e
+
+        self.assertTrue(sys.stdout.text != "")
+        self.assertTrue(sys.stderr.text != "")
+
+        self.assertEquals(sys.stdout.text, valid_stdout)
+        self.assertEquals(sys.stderr.text, valid_stderr)
+
+        sys.stdout, sys.stderr = saved_streams
