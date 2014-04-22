@@ -25,4 +25,4 @@ class Command(BaseCommand):
             row = 'Table: ' + name + '  object count: ' + count
             print(row)
             if kwargs.get('stderr'):
-                sys.stderr.write('error: '+row)
+                sys.stderr.write('error: '+row+'\n')
