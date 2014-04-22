@@ -172,10 +172,18 @@ class CalendarTest(TestCase):
 class TagTest(TestCase):
     fixtures = ['initial_data.json']
 
+    def test_tag_in_page(self):
+        login = self.client.login(username='admin', password='admin')
+        edit_link = reverse('edit')
+        me = PersonalData.objects.get(pk=1)
+        me_dict = me.__dict__
+        form = PersonalDataForm(data=me_dict)
+        response = self.client.post(edit_link, {'form': form})
+        self.assertEquals(response.status_code, 200)
+        self.assertContains(response, '/admin/accounts/personaldata/1/')
+
     def test_tag(self):
         me = PersonalData.objects.get(pk=1)
-
         t = Template('{% load admin_edit %} {% admin_edit me %}')
         c = Context({'me': me})
-        rendered_tag = str(t.render(c))
-        self.assertTrue(rendered_tag.find('/admin/accounts/personaldata/1/') > -1)
+        self.assertTrue(t.render(c).find('/admin/accounts/personaldata/1/') > -1)
