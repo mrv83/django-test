@@ -266,27 +266,27 @@ class SignalTest(TestCase):
     fixtures = ['initial_data.json']
 
     def test_create_signal(self):
-        log_pre_count = DBAction.object.all().count()
+        log_pre_count = DBAction.objects.all().count()
         me = PersonalData.objects.get(pk=1)
         me.pk = 2
         me.save()
-        log_post_count = DBAction.object.all().count()
+        log_post_count = DBAction.objects.all().count()
         self.assertTrue(log_post_count == log_pre_count + 1)
-        self.assertTrue(DBAction.object.get(pk=log_post_count).action == 'create')
+        self.assertTrue(DBAction.objects.get(pk=log_post_count).action_name == 'created')
 
     def test_change_signal(self):
-        log_pre_count = DBAction.object.all().count()
+        log_pre_count = DBAction.objects.all().count()
         me = PersonalData.objects.get(pk=1)
-        me.name = 'vik'
+        me.name = 'aaa'
         me.save()
-        log_post_count = DBAction.object.all().count()
+        log_post_count = DBAction.objects.all().count()
         self.assertTrue(log_post_count == log_pre_count + 1)
-        self.assertTrue(DBAction.object.get(pk=log_post_count).action == 'change')
+        self.assertTrue(DBAction.objects.get(pk=log_post_count).action_name == 'edited')
 
     def test_delete_signal(self):
-        log_pre_count = DBAction.object.all().count()
+        log_pre_count = DBAction.objects.all().count()
         me = PersonalData.objects.get(pk=1)
         me.delete()
-        log_post_count = DBAction.object.all().count()
+        log_post_count = DBAction.objects.all().count()
         self.assertTrue(log_post_count == log_pre_count + 1)
-        self.assertTrue(DBAction.object.get(pk=log_post_count).action == 'delete')
+        self.assertTrue(DBAction.objects.get(pk=log_post_count).action_name == 'deleted')

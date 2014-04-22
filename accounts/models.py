@@ -1,4 +1,6 @@
+# coding=utf-8
 from django.db import models
+from django.db.models import signals
 
 
 class PersonalData(models.Model):
@@ -23,3 +25,38 @@ class RequestData(models.Model):
 
     def __unicode__(self):
         return self.path
+
+
+class DBAction(models.Model):
+    action_name = models.CharField(max_length=32, default='', blank=True, null=True)
+    action_time = models.DateTimeField(auto_now_add=True)
+    action_model_name = models.CharField(max_length=32, default='', blank=True, null=True)
+    action_model_id = models.IntegerField(blank=True, null=True)
+
+
+def db_action_save(sender, **kwargs):
+    act = DBAction()
+    db_record = kwargs["instance"]
+    act.action_model_id = db_record.id
+    act.action_model_name = db_record._meta.module_name
+    if kwargs["created"]:
+        act.action_name = "created"
+    else:
+        act.action_name = "edited"
+    act.save()
+
+
+def db_action_delete(sender, **kwargs):
+    act = DBAction()
+    db_record = kwargs["instance"]
+    act.action_model_id = db_record.id
+    act.action_model_name = db_record._meta.module_name
+    act.action_name = "deleted"
+    act.save()
+
+
+signals.post_save.connect(db_action_save, sender=PersonalData)
+signals.post_delete.connect(db_action_delete, sender=PersonalData)
+
+signals.post_save.connect(db_action_save, sender=RequestData)
+signals.post_delete.connect(db_action_delete, sender=RequestData)
