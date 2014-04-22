@@ -2,6 +2,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.contrib.staticfiles.storage import staticfiles_storage
 from django.forms import ModelForm
 from django.utils.safestring import mark_safe
 
@@ -9,11 +10,14 @@ from accounts.models import PersonalData
 
 
 class CalendarWidget(forms.DateInput):
-
     def prop_media(self):
-        return forms.Media(css={'all': ('/static/css/jquery-ui-1.10.4.custom.css',)},
-                           js=('/static/js/jquery-1.10.2.js', '/static/js/jquery.form.js',
-                                 '/static/js/jquery-ui-1.10.4.custom.js', '/static/js/calendar.js'))
+        return forms.Media(css={'all': (staticfiles_storage.url('css/jquery-ui-1.10.4.custom.css'),)},
+                           js=(
+                               staticfiles_storage.url('js/jquery-1.10.2.js'),
+                               staticfiles_storage.url('js/jquery.form.js'),
+                               staticfiles_storage.url('js/jquery-ui-1.10.4.custom.js'),
+                               staticfiles_storage.url('js/calendar.js')))
+
     media = property(prop_media)
 
     def __init__(self, params='', attrs=None):
@@ -26,11 +30,10 @@ class CalendarWidget(forms.DateInput):
                 $(document).ready(function () {
                     $("#id_%s").datepicker({%s});
                 })
-                    </script>'''%(name, self.params,))
+                    </script>''' % (name, self.params,))
 
 
 class PersonalDataForm(ModelForm):
-
     def __init__(self, *args, **kwargs):
         super(PersonalDataForm, self).__init__(*args, **kwargs)
         self.fields['date_of_birth'].widget = CalendarWidget(
@@ -43,7 +46,6 @@ class PersonalDataForm(ModelForm):
         fields = ("name", "surname", "date_of_birth", "bio", "email", "jabber", "skype", "other_contact", "userpic")
         widgets = {"bio": forms.Textarea(attrs={'rows': 4, 'cols': 50}),
                    "other_contact": forms.Textarea(attrs={'rows': 4, 'cols': 50})}
-
 
 
 class RegisterUser(UserCreationForm):
