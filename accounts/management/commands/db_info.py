@@ -20,11 +20,12 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         for table in ContentType.objects.all():
-            name = str(table)
-            # print(name)
-            count = str(table.model_class().objects.count())
-            row = 'Table: ' + name + '  object count: ' + count
-            # print(row)
-            # self.stdout.write(row+'\n')
-            if kwargs.get('stderr'):
-                sys.stderr.write('error: '+row+'\n')
+            pass
+            # name = str(table)
+            # # print(name)
+            # count = str(table.model_class().objects.count())
+            # row = 'Table: ' + name + '  object count: ' + count
+            # # print(row)
+            # # self.stdout.write(row+'\n')
+            # if kwargs.get('stderr'):
+            #     sys.stderr.write('error: '+row+'\n')
