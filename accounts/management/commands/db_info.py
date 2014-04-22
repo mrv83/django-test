@@ -23,6 +23,6 @@ class Command(BaseCommand):
             name = str(table)
             count = str(table.model_class().objects.count())
             row = 'Table: ' + name + '  object count: ' + count
-            print(row)
+            self.stdout.write(row+'\n')
             if kwargs.get('stderr'):
                 sys.stderr.write('error: '+row+'\n')
