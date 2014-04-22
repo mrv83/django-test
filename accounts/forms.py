@@ -3,24 +3,40 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.forms import ModelForm
+from django.utils.safestring import mark_safe
 
 from accounts.models import PersonalData
 
 
-class CalendarWidget(forms.TextInput):
+class CalendarWidget(forms.DateInput):
 
-    def _media(self):
+    def prop_media(self):
         return forms.Media(css={'all': ('/static/css/jquery-ui-1.10.4.custom.css',)},
                            js=('/static/js/jquery-1.10.2.js', '/static/js/jquery.form.js',
                                  '/static/js/jquery-ui-1.10.4.custom.js', '/static/js/calendar.js'))
-    media = property(_media)
+    media = property(prop_media)
+
+    def __init__(self, params='', attrs=None):
+        self.params = params
+        super(CalendarWidget, self).__init__(attrs=attrs)
+
+    def render(self, name, value, attrs=None):
+        rendered = super(CalendarWidget, self).render(name, value, attrs=attrs)
+        return rendered + mark_safe(u'''<script type="text/javascript">
+                $(document).ready(function () {
+                    $("#id_%s").datepicker({%s});
+                })
+                    </script>'''%(name, self.params,))
 
 
 class PersonalDataForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(PersonalDataForm, self).__init__(*args, **kwargs)
-        self.fields['date_of_birth'].widget = CalendarWidget(attrs=None)
+        self.fields['date_of_birth'].widget = CalendarWidget(
+            params="minDate: -36500, maxDate: 0, dateFormat: 'yy-mm-dd', showButtonPanel: true",
+            attrs={'class': 'datepicker'}
+        )
 
     class Meta:
         model = PersonalData

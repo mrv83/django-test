@@ -47,8 +47,6 @@ $.ajaxSetup({
 
 $(document).ready(function () {
 
-    $("#id_date_of_birth").datepicker({minDate: -36500, maxDate: 0, dateFormat: 'yy-mm-dd', showButtonPanel: true});
-
     var options = {
         url: "/send_data/",
         beforeSubmit: function () {
