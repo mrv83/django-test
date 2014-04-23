@@ -46,15 +46,16 @@ class DBAction(models.Model):
 
 
 def db_action_save(sender, **kwargs):
-    act = DBAction()
-    db_record = kwargs["instance"]
-    act.action_model_id = db_record.id
-    act.action_model_name = db_record._meta.module_name
-    if kwargs["created"]:
-        act.action_name = "created"
-    else:
-        act.action_name = "edited"
-    act.save()
+    if not kwargs["raw"]:
+        act = DBAction()
+        db_record = kwargs["instance"]
+        act.action_model_id = db_record.id
+        act.action_model_name = db_record._meta.module_name
+        if kwargs["created"]:
+            act.action_name = "created"
+        else:
+            act.action_name = "edited"
+        act.save()
 
 
 def db_action_delete(sender, **kwargs):
@@ -64,7 +65,6 @@ def db_action_delete(sender, **kwargs):
     act.action_model_name = db_record._meta.module_name
     act.action_name = "deleted"
     act.save()
-
 
 # Insert here SYSTEM tables to exclude it's of it's object creation/editing/deletion
 EXCLUDE_TABLE = [DBAction, ContentType, Session, Site, MigrationHistory]
