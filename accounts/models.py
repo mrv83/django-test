@@ -66,7 +66,7 @@ def db_action_delete(sender, **kwargs):
     act.save()
 
 
-# Insert here SYSTEM tables to exclude it's of it's object creation/editing/deletion.
+# Insert here SYSTEM tables to exclude it's of it's object creation/editing/deletion
 EXCLUDE_TABLE = [DBAction, ContentType, Session, Site, MigrationHistory]
 
 for table in ContentType.objects.all():
