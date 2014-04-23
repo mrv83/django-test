@@ -3,6 +3,12 @@ from django.db import models
 from django.db.models import signals
 
 
+PRIORITY_CHOICES = (
+    ('0', '0'),
+    ('1', '1'),
+)
+
+
 class PersonalData(models.Model):
     name = models.CharField(max_length=32, default='')
     surname = models.CharField(max_length=32, default='')
@@ -22,6 +28,7 @@ class RequestData(models.Model):
     path = models.CharField(max_length=256)
     method_request = models.CharField(max_length=16)
     time_request = models.DateField(auto_now_add=True)
+    priority = models.CharField(max_length=128, blank=True, default='0', choices=PRIORITY_CHOICES)
 
     def __unicode__(self):
         return self.path

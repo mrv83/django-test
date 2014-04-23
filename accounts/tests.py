@@ -14,7 +14,7 @@ from django.conf import settings
 from accounts.context_processor import all_settings
 from accounts.forms import PersonalDataForm
 from accounts.middleware import RequestMiddleware
-from models import PersonalData, RequestData, DBAction
+from models import PersonalData, RequestData, DBAction, PRIORITY_CHOICES
 
 
 class SimpleTest(TestCase):
@@ -290,3 +290,26 @@ class SignalTest(TestCase):
         log_post_count = DBAction.objects.all().count()
         self.assertTrue(log_post_count == log_pre_count + 1)
         self.assertTrue(DBAction.objects.get(pk=log_post_count).action_name == 'deleted')
+
+
+class RequestsLoadTest(TestCase):
+
+    def test_templates(self):
+        t = Template('requests_load.html')
+        requests = RequestData.objects.all()
+        count_request = 0
+        c = Context({'requests': requests, 'choises': PRIORITY_CHOICES, 'count_request': count_request})
+        self.assertTrue(t.render(c).find('Request with this priority not found') > -1)
+
+        t = Template('selector.html')
+        for x in range(0, 5):
+            r = RequestData()
+            r.path = '/'
+            r.method_request = 'GET'
+            r.priority = 1
+            r.save()
+        requests = RequestData.objects.all()
+        count_request = 5
+        c = Context({'requests': requests, 'choises': PRIORITY_CHOICES, 'count_request': count_request})
+        self.assertTrue(t.render(c).find('load_requests') > -1)
+
