@@ -3,7 +3,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.sessions.models import Session
 from django.contrib.sites.models import Site
 from django.db import models
-from django.db.models import signals
+from django.db.models.signals import post_save, post_delete
+from django.dispatch import receiver
 from south.models import MigrationHistory
 
 
@@ -45,37 +46,30 @@ class DBAction(models.Model):
     action_model_id = models.IntegerField(blank=True, null=True)
 
 
+EXCLUDE_TABLE = [DBAction, ContentType, Session, Site, MigrationHistory]
+
+
+@receiver(post_save)
 def db_action_save(sender, **kwargs):
-    if not kwargs["raw"]:
+    if sender not in EXCLUDE_TABLE:
+        if not kwargs["raw"]:
+            act = DBAction()
+            db_record = kwargs["instance"]
+            act.action_model_id = db_record.id
+            act.action_model_name = db_record._meta.module_name
+            if kwargs["created"]:
+                act.action_name = "created"
+            else:
+                act.action_name = "edited"
+            act.save()
+
+
+@receiver(post_delete)
+def db_action_delete(sender, **kwargs):
+    if sender not in EXCLUDE_TABLE:
         act = DBAction()
         db_record = kwargs["instance"]
         act.action_model_id = db_record.id
         act.action_model_name = db_record._meta.module_name
-        if kwargs["created"]:
-            act.action_name = "created"
-        else:
-            act.action_name = "edited"
+        act.action_name = "deleted"
         act.save()
-
-
-def db_action_delete(sender, **kwargs):
-    act = DBAction()
-    db_record = kwargs["instance"]
-    act.action_model_id = db_record.id
-    act.action_model_name = db_record._meta.module_name
-    act.action_name = "deleted"
-    act.save()
-
-# Insert here SYSTEM tables to exclude it's of it's object creation/editing/deletion
-# EXCLUDE_TABLE = [DBAction, ContentType, Session, Site, MigrationHistory]
-
-# for table in ContentType.objects.all():
-#     if table.model_class() not in EXCLUDE_TABLE:
-#         signals.post_save.connect(db_action_save, sender=table.model_class())
-#         signals.post_delete.connect(db_action_delete, sender=table.model_class())
-
-INCLUDE_TABLE = [RequestData, PersonalData]
-
-for table in INCLUDE_TABLE:
-    signals.post_save.connect(db_action_save, sender=table)
-    signals.post_delete.connect(db_action_delete, sender=table)
