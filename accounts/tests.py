@@ -14,7 +14,7 @@ from django.conf import settings
 from accounts.context_processor import all_settings
 from accounts.forms import PersonalDataForm
 from accounts.middleware import RequestMiddleware
-from models import PersonalData, RequestData, DBAction, PRIORITY_CHOICES
+from models import PersonalData, RequestData, DBAction
 
 
 class SimpleTest(TestCase):
@@ -293,23 +293,28 @@ class SignalTest(TestCase):
 
 
 class RequestsLoadTest(TestCase):
-
     def test_templates(self):
-        t = Template('requests_load.html')
-        requests = RequestData.objects.all()
-        count_request = 0
-        c = Context({'requests': requests, 'choises': PRIORITY_CHOICES, 'count_request': count_request})
-        self.assertTrue(t.render(c).find('Request with this priority not found') > -1)
 
-        t = Template('selector.html')
+        response = self.client.post('/priority_request/', {'prior': 2}, HTTP_X_REQUESTED_WITH='XMLHttpRequest', )
+        self.assertEqual(len(response.context['requests']), 0)
+        self.assertEqual(response.status_code, 200)
+
         for x in range(0, 5):
             r = RequestData()
             r.path = '/'
             r.method_request = 'GET'
             r.priority = 1
             r.save()
-        requests = RequestData.objects.all()
-        count_request = 5
-        c = Context({'requests': requests, 'choises': PRIORITY_CHOICES, 'count_request': count_request})
-        self.assertTrue(t.render(c).find('load_requests') > -1)
+        response = self.client.post('/priority_request/', {'prior': 1}, HTTP_X_REQUESTED_WITH='XMLHttpRequest', )
+        self.assertEqual(len(response.context['requests']), 5)
+        self.assertEqual(response.status_code, 200)
 
+        for x in range(0, 6):
+            r = RequestData()
+            r.path = '/'
+            r.method_request = 'GET'
+            r.priority = 1
+            r.save()
+        response = self.client.post('/priority_request/', {'prior': 1}, HTTP_X_REQUESTED_WITH='XMLHttpRequest', )
+        self.assertEqual(len(response.context['requests']), 10)
+        self.assertEqual(response.status_code, 200)

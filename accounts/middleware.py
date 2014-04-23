@@ -7,4 +7,5 @@ class RequestMiddleware(object):
         r = RequestData()
         r.path = request.path
         r.method_request = request.method
+        r.priority = 0
         r.save()
