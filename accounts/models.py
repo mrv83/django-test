@@ -1,6 +1,10 @@
 # coding=utf-8
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.sessions.models import Session
+from django.contrib.sites.models import Site
 from django.db import models
 from django.db.models import signals
+from south.models import MigrationHistory
 
 
 class PersonalData(models.Model):
@@ -55,8 +59,10 @@ def db_action_delete(sender, **kwargs):
     act.save()
 
 
-signals.post_save.connect(db_action_save, sender=PersonalData)
-signals.post_delete.connect(db_action_delete, sender=PersonalData)
+# Insert here SYSTEM tables to exclude it's of
+EXCLUDE_TABLE = [DBAction, ContentType, Session, Site, MigrationHistory]
 
-signals.post_save.connect(db_action_save, sender=RequestData)
-signals.post_delete.connect(db_action_delete, sender=RequestData)
+for table in ContentType.objects.all():
+    if table.model_class() not in EXCLUDE_TABLE:
+        signals.post_save.connect(db_action_save, sender=table.model_class())
+        signals.post_delete.connect(db_action_delete, sender=table.model_class())
