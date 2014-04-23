@@ -69,14 +69,8 @@ def db_action_delete(sender, **kwargs):
 # Insert here SYSTEM tables to exclude it's of it's object creation/editing/deletion
 # EXCLUDE_TABLE = [DBAction, ContentType, Session, Site, MigrationHistory]
 
-# for table in ContentType.objects.all():
-#     if table.model_class() not in EXCLUDE_TABLE:
-#         signals.post_save.connect(db_action_save, sender=table.model_class())
-#         signals.post_delete.connect(db_action_delete, sender=table.model_class())
+signals.post_save.connect(db_action_save, sender=PersonalData)
+signals.post_delete.connect(db_action_delete, sender=PersonalData)
 
-INCLUDE_TABLE = [RequestData, PersonalData]
-
-for table in ContentType.objects.all():
-    if table.model_class() in INCLUDE_TABLE:
-        signals.post_save.connect(db_action_save, sender=table.model_class())
-        signals.post_delete.connect(db_action_delete, sender=table.model_class())
+signals.post_save.connect(db_action_save, sender=RequestData)
+signals.post_delete.connect(db_action_delete, sender=RequestData)
