@@ -290,3 +290,31 @@ class SignalTest(TestCase):
         log_post_count = DBAction.objects.all().count()
         self.assertTrue(log_post_count == log_pre_count + 1)
         self.assertTrue(DBAction.objects.get(pk=log_post_count).action_name == 'deleted')
+
+
+class RequestsLoadTest(TestCase):
+    def test_templates(self):
+
+        response = self.client.post('/priority_request/', {'prior': 2}, HTTP_X_REQUESTED_WITH='XMLHttpRequest', )
+        self.assertEqual(len(response.context['requests']), 0)
+        self.assertEqual(response.status_code, 200)
+
+        for x in range(0, 5):
+            r = RequestData()
+            r.path = '/'
+            r.method_request = 'GET'
+            r.priority = 1
+            r.save()
+        response = self.client.post('/priority_request/', {'prior': 1}, HTTP_X_REQUESTED_WITH='XMLHttpRequest', )
+        self.assertEqual(len(response.context['requests']), 5)
+        self.assertEqual(response.status_code, 200)
+
+        for x in range(0, 6):
+            r = RequestData()
+            r.path = '/'
+            r.method_request = 'GET'
+            r.priority = 1
+            r.save()
+        response = self.client.post('/priority_request/', {'prior': 1}, HTTP_X_REQUESTED_WITH='XMLHttpRequest', )
+        self.assertEqual(len(response.context['requests']), 10)
+        self.assertEqual(response.status_code, 200)

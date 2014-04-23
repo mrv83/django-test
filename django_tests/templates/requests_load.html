@@ -1,0 +1,9 @@
+    {% if count_request > 0 %}
+        {% for r in requests %}
+            <p><a href="{{ r.path }}">Request: "{{ r.path }}"    Method: {{ r.method_request }}   at: {{ r.time_request }}
+            Priority: {{ r.priority }}</a></p>
+        {% endfor %}
+    {% else %}
+        <h2>Request with this priority not found</h2>
+    {% endif %}
+    <p>All request with this priority: {{ count_request }}</p>

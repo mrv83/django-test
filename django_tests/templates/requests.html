@@ -1,9 +1,26 @@
 {% extends 'base.html' %}
 {% block content %}
-    {% for r in requests %}
-        <p><a href="{{ r.path }}">Request: "{{ r.path }}"    Method: {{ r.method_request }}   at: {{ r.time_request }}
-        </a></p>
-    {% endfor %}
+    <select id="select_priority">
+        <option value="all" selected>All priority</option>
+        {% for k, v in choises %}
+        <option value="{{ k }}">Priority: {{ v }}</option>
+        {% endfor %}
+    </select>
+
+    <div id="requests_load">
+
+        {% if count_request > 0 %}
+            {% for r in requests %}
+                <p><a href="{{ r.path }}">Request: "{{ r.path }}"    Method: {{ r.method_request }}   at: {{ r.time_request }}
+                Priority: {{ r.priority }}</a></p>
+            {% endfor %}
+        {% else %}
+            <h2>Request with this priority not found</h2>
+        {% endif %}
+        <p>All request with this priority: {{ count_request }}</p>
+    </div>
+
+
     <br><br>
     <a href="{% url 'home' %}">back to main page</a>
 {% endblock content %}
